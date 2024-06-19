@@ -1,4 +1,4 @@
-export type CatsFactCardData = {
+export interface CatsFactCardData {
   user: {
     id: string;
     photo: string;

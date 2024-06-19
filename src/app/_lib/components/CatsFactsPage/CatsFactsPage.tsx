@@ -10,9 +10,7 @@ const CatsFactsPage = () => {
   return (
     <AppWrapper>
       <BasePage>
-        <h1>
-          Cats Facts Widget
-        </h1>
+        <h1 className="text-4xl font-light text-gray-600 mb-12">Cats Facts Widget</h1>
         <CatsFactsWidget />
         <AppFooter />
       </BasePage>

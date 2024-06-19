@@ -1,8 +1,7 @@
 import React from 'react'
-import CatsFactCard from './components/CatFactCard'
 import fetchCardsData from './services/fetchCardsData'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import CatsFactCardData from './types/CatsFactCardData.type'
+import CatsFactsContainer from './components/CatsFactsContainer/CatsFactsContainer'
 
 
 const CatsFactsWidget = () => {
@@ -33,39 +32,31 @@ const CatsFactsWidget = () => {
   })
 
   return (
-    <div>
-      {status === 'pending' ? (
-        <p>Loading...</p>
-      ) : status === 'error' ? (
-        <p>Error: {error.message}</p>
-      ) : (
-        <>
-          {data.pages.map((group, i) => {
-            return (
-              <React.Fragment key={i}>
-                {group.map((cardData: CatsFactCardData, j: number) => {
-                  return <CatsFactCard key={`CatsFactCard-${i}-${j}`} {...cardData} />
-                })}
-              </React.Fragment>
-            )
+    <CatsFactsContainer pages={data?.pages ?? []} />
+    // <div>
+    //   {status === 'pending' ? (
+    //     <p>Loading...</p>
+    //   ) : status === 'error' ? (
+    //     <p>Error: {error.message}</p>
+    //   ) : (
+    //     <>
 
-          })}
-          <div>
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={!hasNextPage || isFetchingNextPage}
-            >
-              {isFetchingNextPage
-                ? 'Loading more...'
-                : hasNextPage
-                  ? 'Load More'
-                  : 'Nothing more to load'}
-            </button>
-          </div>
-          <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
-        </>
-      )}
-    </div>
+    //       <div>
+    //         <button
+    //           onClick={() => fetchNextPage()}
+    //           disabled={!hasNextPage || isFetchingNextPage}
+    //         >
+    //           {isFetchingNextPage
+    //             ? 'Loading more...'
+    //             : hasNextPage
+    //               ? 'Load More'
+    //               : 'Nothing more to load'}
+    //         </button>
+    //       </div>
+    //       <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+    //     </>
+    //   )}
+    // </div>
   );
 }
 
