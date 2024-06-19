@@ -1,6 +1,6 @@
 import React from 'react'
+import fetchUsers from '../../services/fetchUsers'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import fetchUsers from '../../services/fetchUsers';
 
 
 const CatsFactsWidget = () => {
@@ -32,9 +32,6 @@ const CatsFactsWidget = () => {
 
   return (
     <div>
-      <h1>
-        Cats Facts Widget
-      </h1>
       {status === 'pending' ? (
         <p>Loading...</p>
       ) : status === 'error' ? (

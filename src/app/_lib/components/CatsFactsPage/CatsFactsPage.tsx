@@ -10,6 +10,9 @@ const CatsFactsPage = () => {
   return (
     <AppWrapper>
       <BasePage>
+        <h1>
+          Cats Facts Widget
+        </h1>
         <CatsFactsWidget />
         <AppFooter />
       </BasePage>
