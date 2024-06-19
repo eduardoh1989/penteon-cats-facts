@@ -1,6 +1,6 @@
 import React from 'react'
-import fetchUsers from '../../services/fetchUsers'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import fetchCardsData from '../../services/fetchCardsData'
 
 
 const CatsFactsWidget = () => {
@@ -15,7 +15,7 @@ const CatsFactsWidget = () => {
     status,
   } = useInfiniteQuery({
     queryKey: ['users'],
-    queryFn: fetchUsers,
+    queryFn: fetchCardsData,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
   })
@@ -43,9 +43,8 @@ const CatsFactsWidget = () => {
 
             return (
               <React.Fragment key={i}>
-                {group.results.map((person: any) => {
-                  console.log('person', person)
-                  return <p key={person.email}>{`${person.name.title} ${person.name.first}`}</p>
+                {group.map((cardData: any) => {
+                  return <p key={cardData.user.email}>{`${cardData.user.name}`}</p>
                 })}
               </React.Fragment>
             )

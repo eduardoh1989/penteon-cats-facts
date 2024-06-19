@@ -1,2 +1,2 @@
 export const API_PERSON_SEED = 'CATS_FACTS_WIDGET'
-export const API_PERSON_LIMIT = 10
+export const API_CATS_FACTS_LIMIT = 10
