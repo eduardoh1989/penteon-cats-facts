@@ -1,6 +1,6 @@
 import CatsFactsPage from "./_lib/components/CatsFactsPage"
 
-export default function Home() {
+export default function CatsFactsHome() {
   return (
     <CatsFactsPage />
   );
