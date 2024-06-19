@@ -1,6 +1,8 @@
 import React from 'react'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import CatsFactCard from './components/CatFactCard'
 import fetchCardsData from './services/fetchCardsData'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import CatsFactCardData from './types/CatsFactCardData.type'
 
 
 const CatsFactsWidget = () => {
@@ -39,12 +41,10 @@ const CatsFactsWidget = () => {
       ) : (
         <>
           {data.pages.map((group, i) => {
-            console.log('group', group)
-
             return (
               <React.Fragment key={i}>
-                {group.map((cardData: any) => {
-                  return <p key={cardData.user.email}>{`${cardData.user.name}`}</p>
+                {group.map((cardData: CatsFactCardData, j: number) => {
+                  return <CatsFactCard key={`CatsFactCard-${i}-${j}`} {...cardData} />
                 })}
               </React.Fragment>
             )

@@ -25,8 +25,9 @@ const buildCardsData = (catsFactsList: any, usersList: any) => {
   return catsFactsList.map((catsFact: any, index: number) => {
     return {
       user: {
+        id: usersList[index].login.uuid,
+        photo: usersList[index].picture.thumbnail,
         name: `${usersList[index].name.title} ${usersList[index].name.first}`,
-        email: usersList[index].email,
       },
       catsFact: catsFact.fact,
 
