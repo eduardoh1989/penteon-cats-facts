@@ -1,6 +1,6 @@
 import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import fetchCardsData from '../../services/fetchCardsData'
+import fetchCardsData from './services/fetchCardsData'
 
 
 const CatsFactsWidget = () => {
