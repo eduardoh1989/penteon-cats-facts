@@ -1,6 +1,6 @@
 export type QueryFunctionArgs = {
   queryKey: string | string[];
-  pageParam: string | number;
+  pageParam: number;
 }
 
 export default QueryFunctionArgs;

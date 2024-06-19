@@ -1,28 +1,49 @@
 import fetchUsers from "./fetchUsers"
 import fetchCatsFacts from "./fetchCatsFacts"
 import { API_CATS_FACTS_LIMIT } from "@/lib/config"
+import CatsFactPage from "../types/CatsFactPage.type"
+import CatsFactCardData from "../types/CatsFactCardData.type"
 import QueryFunctionArgs from "@/lib/core/types/QueryFunctionArgs.type"
 
-export default async (params:QueryFunctionArgs) => {
+
+export default async (params:QueryFunctionArgs): Promise<CatsFactPage> => {
   try {
-    const catsFactsData = await fetchCatsFacts(params)
-    const usersData = await fetchUsers(params)
+    const [catsFactsData, usersData] = await Promise.all([
+      fetchCatsFacts(params),
+      fetchUsers(params)
+    ])
   
     const catsFactsList = catsFactsData.data
     const usersList = usersData.results
 
-    return buildCardsData(catsFactsList, usersList)
+    const nextPage = getNextPage(params.pageParam, usersData, catsFactsData)
+
+    return {
+      list: buildCardsData(catsFactsList, usersList),
+      page: params.pageParam,
+      nextCursor: nextPage,
+    }
   } catch (error: any) {
     throw new Error(error)
   }
 }
 
-const buildCardsData = (catsFactsList: any, usersList: any) => {
-  const collectionsHasDesiredLength = catsFactsList.length === usersList.length && catsFactsList.length === API_CATS_FACTS_LIMIT
-  if (!collectionsHasDesiredLength) {
-    throw new Error('Not enough data to build cards')
-  }
-  return catsFactsList.map((catsFact: any, index: number) => {
+const getNextPage = (page: number, usersData: any, catsFactsData: any) => {
+  const usersHasMore = (
+    usersData.info.results === API_CATS_FACTS_LIMIT
+  )
+  const catsFactsHasMore = (
+    (catsFactsData.current_page < catsFactsData.last_page) && 
+    (!!catsFactsData.next_page_url)
+  )
+  if (catsFactsHasMore && usersHasMore) {
+    return page + 1
+  } else return null
+}
+
+const buildCardsData = (catsFactsList: any[], usersList: any[]): CatsFactCardData[] => {
+  const howMany = usersList.length > catsFactsList.length ? usersList.length : catsFactsList.length
+  return catsFactsList.slice(0, howMany).map((catsFact, index) => {
     return {
       user: {
         id: usersList[index].login.uuid,
@@ -30,7 +51,6 @@ const buildCardsData = (catsFactsList: any, usersList: any) => {
         name: `${usersList[index].name.title} ${usersList[index].name.first}`,
       },
       catsFact: catsFact.fact,
-
     }
   })
 }

@@ -17,22 +17,30 @@ const CatsFactsWidget = () => {
   } = useInfiniteQuery({
     queryKey: ['users'],
     queryFn: fetchCardsData,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-  })
-
-  console.log('useInfiniteQuery', {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => {
+      console.log('getNextPageParam', { lastPage, pages })
+      return lastPage.nextCursor
+    },
   })
 
   return (
-    <CatsFactsContainer pages={data?.pages ?? []} />
+    <>
+      <CatsFactsContainer pages={data?.pages ?? []} />
+      <div>
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={!hasNextPage || isFetchingNextPage}
+        >
+          {isFetchingNextPage
+            ? 'Loading more...'
+            : hasNextPage
+              ? 'Load More'
+              : 'Nothing more to load'}
+        </button>
+      </div>
+    </>
+
     // <div>
     //   {status === 'pending' ? (
     //     <p>Loading...</p>
@@ -41,18 +49,18 @@ const CatsFactsWidget = () => {
     //   ) : (
     //     <>
 
-    //       <div>
-    //         <button
-    //           onClick={() => fetchNextPage()}
-    //           disabled={!hasNextPage || isFetchingNextPage}
-    //         >
-    //           {isFetchingNextPage
-    //             ? 'Loading more...'
-    //             : hasNextPage
-    //               ? 'Load More'
-    //               : 'Nothing more to load'}
-    //         </button>
-    //       </div>
+    // <div>
+    //   <button
+    //     onClick={() => fetchNextPage()}
+    //     disabled={!hasNextPage || isFetchingNextPage}
+    //   >
+    //     {isFetchingNextPage
+    //       ? 'Loading more...'
+    //       : hasNextPage
+    //         ? 'Load More'
+    //         : 'Nothing more to load'}
+    //   </button>
+    // </div>
     //       <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
     //     </>
     //   )}
