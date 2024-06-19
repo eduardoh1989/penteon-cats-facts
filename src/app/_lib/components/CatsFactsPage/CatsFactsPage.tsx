@@ -1,24 +1,14 @@
 "use client";
 import React from 'react'
-import CatsFactsWidget from '../CatsFactsWidget';
-
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-
-
-const queryClient = new QueryClient()
+import CatsFactsWidget from '../CatsFactsWidget'
+import AppWrapper from '@/lib/core/components/AppWrapper/AppWrapper'
 
 
 const CatsFactsPage = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <AppWrapper>
       <CatsFactsWidget />
-    </QueryClientProvider>
+    </AppWrapper>
   );
 }
 
