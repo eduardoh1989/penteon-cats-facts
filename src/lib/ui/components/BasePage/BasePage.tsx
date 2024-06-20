@@ -6,7 +6,7 @@ interface BasePageProps {
 
 const BasePage = (props: BasePageProps) => {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-between p-24 w-full">
+    <main className="flex flex-col min-h-screen items-center justify-between w-full p-4 md:p-24">
       {props.children}
     </main>
   );
