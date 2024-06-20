@@ -1,0 +1,4 @@
+export enum CatsFactsApiErrors {
+  API_ERROR_GENERAL = 'API_ERROR_GENERAL',
+  API_ERROR_UNKNOWN = 'API_ERROR_UNKNOWN',
+}

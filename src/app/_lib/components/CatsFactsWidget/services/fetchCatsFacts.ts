@@ -5,6 +5,5 @@ export default async (params:QueryFunctionArgs) => {
   const url = `https://catfact.ninja/facts?limit=${API_CATS_FACTS_LIMIT}`
   const response = await fetch(url)
   const data = await response.json()
-  console.log('fetchCatsFacts', data)
   return data
 }

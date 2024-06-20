@@ -2,19 +2,25 @@ import fetchUsers from "./fetchUsers"
 import fetchCatsFacts from "./fetchCatsFacts"
 import { API_CATS_FACTS_LIMIT } from "@/lib/config"
 import CatsFactPage from "../types/CatsFactPage.type"
+import { CommonErrors } from "@/lib/constants/errors"
+import { CatsFactsApiErrors } from "../constants/errors"
+import isNetworkError from "@/lib/core/utils/isNetworkError"
 import CatsFactCardData from "../types/CatsFactCardData.type"
 import QueryFunctionArgs from "@/lib/core/types/QueryFunctionArgs.type"
 
 
 export default async (params:QueryFunctionArgs): Promise<CatsFactPage> => {
+
   try {
+    // emulateError(params.pageParam)
+
     const [catsFactsData, usersData] = await Promise.all([
       fetchCatsFacts(params),
       fetchUsers(params)
     ])
 
     // Simulate slow network for testing purposes
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 500))
   
     const catsFactsList = catsFactsData.data
     const usersList = usersData.results
@@ -27,7 +33,22 @@ export default async (params:QueryFunctionArgs): Promise<CatsFactPage> => {
       nextCursor: nextPage,
     }
   } catch (error: any) {
-    throw new Error(error)
+    if(isNetworkError(error)) {
+      throw new Error(CommonErrors.NETWORK_ERROR)
+    }
+    if(error.message !== CatsFactsApiErrors.API_ERROR_GENERAL) {
+      throw new Error(CatsFactsApiErrors.API_ERROR_UNKNOWN)
+    }
+    throw new Error(CatsFactsApiErrors.API_ERROR_GENERAL)
+  }
+}
+
+const emulateError = (pageParam: number) => {
+  if (pageParam > 3) {
+    const probability = Math.random()
+    if (probability > 0.20) {
+      throw new Error('some error')
+    }
   }
 }
 
