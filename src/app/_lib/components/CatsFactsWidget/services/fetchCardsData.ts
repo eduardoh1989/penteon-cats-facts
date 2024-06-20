@@ -12,6 +12,9 @@ export default async (params:QueryFunctionArgs): Promise<CatsFactPage> => {
       fetchCatsFacts(params),
       fetchUsers(params)
     ])
+
+    // Simulate slow network for testing purposes
+    await new Promise(resolve => setTimeout(resolve, 1000))
   
     const catsFactsList = catsFactsData.data
     const usersList = usersData.results

@@ -1,6 +1,7 @@
 import React from 'react'
 import fetchCardsData from './services/fetchCardsData'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import CatsFactsLoading from './components/CatsFactsLoading'
 import CatsFactsContainer from './components/CatsFactsContainer/CatsFactsContainer'
 
 
@@ -11,22 +12,20 @@ const CatsFactsWidget = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
+    isLoading,
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
     queryKey: ['users'],
     queryFn: fetchCardsData,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
-      console.log('getNextPageParam', { lastPage, pages })
-      return lastPage.nextCursor
-    },
+    getNextPageParam: (lastPage, pages) => (lastPage.nextCursor),
   })
 
   return (
     <>
       <CatsFactsContainer pages={data?.pages ?? []} />
+      {(isLoading || isFetchingNextPage) && <CatsFactsLoading />}
       <div>
         <button
           onClick={() => fetchNextPage()}
